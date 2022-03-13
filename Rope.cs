@@ -40,7 +40,18 @@ namespace COIS3020_Ropes
 
         // Insert string S at index i (6 marks).
         public void Insert(string S, int i) {
-            
+            // build two new empty Ropes to hold the split Rope left and right
+            Rope leftRope = new Rope();
+            Rope rightRope = new Rope();
+            // split and fill the ropes
+            Split(i, leftRope, rightRope);
+            // build a new rope with the string
+            Rope middleRope = new Rope(S);
+            // build a new temp rope to hold the left and middle concatenated rope
+            Rope temp = Concatenate(leftRope, middleRope);
+            // set the root of this rope to the root of the new concatenated rope root
+            // from the concatenation of the temp (left and middle) rope with the right rope
+            Root = Concatenate(temp, rightRope).Root;
         } 
 
         // Delete the substring S[i, j] (6 marks).
