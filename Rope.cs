@@ -55,7 +55,24 @@ namespace COIS3020_Ropes
         } 
 
         // Delete the substring S[i, j] (6 marks).
-        public void Delete(int i, int j) {} 
+        public void Delete(int i, int j) {
+            // check to make sure that j > i
+            if (j <= i) {return;}
+            // build new ropes for splitting. right will hold right side of final rope
+            Rope rightRope = new Rope();
+            // temp will be split again to get the left side of the rope
+            Rope temp = new Rope();
+            // split the rope at j
+            Split(j, temp, rightRope);
+            // build a new rope that will hold the left side of the tree
+            Rope leftRope = new Rope();
+            // split temp, right side of the tree will be deleted so rope doesn't need
+            // to be saved. 
+            temp.Split(i, leftRope, new Rope());
+            // set this root to the root of the concatenated tree from the new left and 
+            // right ropes
+            this.Root = Concatenate(leftRope, rightRope).Root;
+        } 
 
         // Return the substring S[i, j] (8marks).
         public string Substring(int i, int j) {return "";} 
