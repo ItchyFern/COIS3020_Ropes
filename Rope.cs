@@ -75,7 +75,24 @@ namespace COIS3020_Ropes
         } 
 
         // Return the substring S[i, j] (8marks).
-        public string Substring(int i, int j) {return "";} 
+        public string Substring(int i, int j) {
+            // check to make sure that j > i
+            if (j <= i) {return "";}
+            // build new rope for splitting. only the left side is important
+            // temp will be split again to get the middle substring of the rope
+            Rope temp = new Rope();
+            // split the rope at j, right side is thrown away as its not needed
+            Split(j, temp, new Rope());
+            // build a new rope that will hold the right side of the tree,
+            // which will be our substring
+            Rope subRope = new Rope();
+            // split temp, left side of the tree will be is not needed so rope doesn't need
+            // to be saved. 
+            temp.Split(i, new Rope(), subRope);
+            // set this root to the root of the concatenated tree from the new left and 
+            // right ropes
+            return subRope.ToString();
+        } 
 
         // Return the character at index i (4 marks).
         public char CharAt(int i) {
