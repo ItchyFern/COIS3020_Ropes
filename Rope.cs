@@ -127,9 +127,9 @@ namespace COIS3020_Ropes
             while (n.Value != null){
                 // if the weight of the node is less than i, 
                 // subtract weight from i and go right (if node exists)
-                if (n.Weight < i && n.Right != null){
+                if (n.Left != null && n.Left.Weight < i && n.Right != null){
                     n = n.Right;
-                    i -= n.Weight;
+                    i -= n.Left.Weight;
                 }
                 // if the weight of the node is greater than or equal to i, 
                 // go left (if node exists)
