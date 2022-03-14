@@ -37,7 +37,33 @@ namespace COIS3020_Ropes
         } 
 
         // Return the two ropes split at index i (10 marks).
-        public void Split(int i, Rope R1, Rope R2) {} 
+        public void Split(int i, Rope R1, Rope R2) {
+            // find node n with index i of the string
+            RopeNode n = root;
+            while (n.Value != null){
+                // if the weight of the node is less than i, 
+                // subtract weight from i and go right (if node exists)
+                if (n.Left != null && n.Left.Weight < i && n.Right != null){
+                    n = n.Right;
+                    i -= n.Left.Weight;
+                }
+                // if the weight of the node is greater than or equal to i, 
+                // go left (if node exists)
+                else if (n.Left != null)
+                {
+                    n = n.Left;
+                }
+            }
+            // If the index splits the substring at p into two then insert 
+            // the two  parts of the string between (new) left and right 
+            // subtrees of n
+            String leftString = n.Value.Substring(0, i);
+            String rightString = n.Value.Substring(i);
+            n.Left = new RopeNode(leftString.Length, leftString);
+            n.Weight = n.Left.Weight;
+            n.Value = "";
+            n.Right = new RopeNode(rightString.Length, rightString);
+        } 
 
         // Insert string S at index i (6 marks).
         public void Insert(string S, int i) {
@@ -118,7 +144,7 @@ namespace COIS3020_Ropes
         //Return the index of the first occurrence of character c (4 marks).
 
         public int IndexOf(char c) {
-            return Int32.Parse(InOrder(find_char:c));
+            return Int32.Parse(InOrder( find_char:c ));
         }
 
         // Reverse the string represented by the current rope (6 marks).
@@ -129,22 +155,24 @@ namespace COIS3020_Ropes
 
         // Return the string represented by the current rope (4 marks).
         public override string ToString() {
-            return InOrder( toString:true);
+            return InOrder( toString:true );
         } 
 
         // Print the augmented binary tree of the current rope (4 marks).
-        public void PrintRope() {} 
+        public void PrintRope() {
+            InOrder( print: true );
+        } 
 
         // inorder traversal helper with a couple flags to provide use for IndexOf and ToString
-        private string InOrder(Boolean toString = false, char find_char = '0') {
+        private string InOrder(Boolean print = false, Boolean toString = false, char find_char = '‎') {
 
             if (Root == null){
                 return "";
             }
             Stack<RopeNode> s = new Stack<RopeNode>();
             RopeNode n = Root;
-            int index = 0;
-            string returnString = "";
+            int index = 0; // for find_char
+            string returnString = ""; // for toString
     
             // traverse the tree
             while (n != null || s.Count > 0)
@@ -163,11 +191,15 @@ namespace COIS3020_Ropes
     
                 /* Current must be NULL at this point */
                 n = s.Pop();
-                // if print flag is true, add to return string
+                // if toString flag is true, add node values to return string
                 if (toString) { 
                     returnString += n.Value; 
                 }
-                // if print flag is not true, search for the character provided
+                // if print flag is true, print each node
+                else if (print){
+                    Console.WriteLine(n);
+                }
+                // else, expect this is a IndexOf call, and return index of string 
                 else {
                     if (n.Value.Contains(find_char)){
                         // convert to a string to satisfy return type, parse after returned
@@ -181,6 +213,10 @@ namespace COIS3020_Ropes
                 left subtree.  Now, it's right
                 subtree's turn */
                 n = n.Right;
+            }
+            // if it was a search and the index was not found
+            if (find_char != '‎') {
+                return "-1";
             }
             return "";
         }

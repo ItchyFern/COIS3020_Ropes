@@ -58,7 +58,7 @@ namespace COIS3020_Ropes {
 
         public override string ToString() //ToString method overload 
         {
-            return this.Value;
+            return $"Weight: {this.Weight} | Value: {this.Value}";
         }
     }
 }
