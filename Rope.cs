@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace COIS3020_Ropes
 {
@@ -116,7 +117,9 @@ namespace COIS3020_Ropes
 
         //Return the index of the first occurrence of character c (4 marks).
 
-        public int IndexOf(char c) {return -1;} 
+        public int IndexOf(char c) {
+            return Int32.Parse(InOrder(find_char:c));
+        }
 
         // Reverse the string represented by the current rope (6 marks).
         public void Reverse() {} 
@@ -125,9 +128,61 @@ namespace COIS3020_Ropes
         public int Length() {return -1;} 
 
         // Return the string represented by the current rope (4 marks).
-        public override string ToString() {return "";} 
+        public override string ToString() {
+            return InOrder( toString:true);
+        } 
 
         // Print the augmented binary tree of the current rope (4 marks).
         public void PrintRope() {} 
+
+        // inorder traversal helper with a couple flags to provide use for IndexOf and ToString
+        private string InOrder(Boolean toString = false, char find_char = '0') {
+
+            if (Root == null){
+                return "";
+            }
+            Stack<RopeNode> s = new Stack<RopeNode>();
+            RopeNode n = Root;
+            int index = 0;
+            string returnString = "";
+    
+            // traverse the tree
+            while (n != null || s.Count > 0)
+            {
+    
+                /* Reach the left most Node of the
+                curr Node */
+                while (n != null)
+                {
+                    /* place pointer to a tree node on
+                    the stack before traversing
+                    the node's left subtree */
+                    s.Push(n);
+                    n = n.Left;
+                }
+    
+                /* Current must be NULL at this point */
+                n = s.Pop();
+                // if print flag is true, add to return string
+                if (toString) { 
+                    returnString += n.Value; 
+                }
+                // if print flag is not true, search for the character provided
+                else {
+                    if (n.Value.Contains(find_char)){
+                        // convert to a string to satisfy return type, parse after returned
+                        return (index + n.Value.IndexOf(find_char)).ToString();
+                    }
+                    index += n.Value.Length;
+                }
+                
+    
+                /* we have visited the node and its
+                left subtree.  Now, it's right
+                subtree's turn */
+                n = n.Right;
+            }
+            return "";
+        }
     }
 }
